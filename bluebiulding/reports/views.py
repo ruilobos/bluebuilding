@@ -35,7 +35,7 @@ def exhibition(request):
     seu_nome = dados_relatorio['name']
     cryptocurrency = dados_relatorio['bitcoin']
 
-    # API para coletar as informacoes financeiras da criptomoeda
+    # API to collect cryptocurrency financial information
     url1 = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
     parameters1 = {
         'slug' : cryptocurrency,
@@ -61,7 +61,7 @@ def exhibition(request):
         print(e)
             
 
-    # API para coletar as informacoes basicas da cryptomoeda.
+    # API to collect basic cryptocurrency information.
     cripto_slug=cryptocurrency
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/info'
     parameters = {

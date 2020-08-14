@@ -30,8 +30,8 @@ def get_symbol():
 #get_symbol()
 
 def get_quote():
-  name=input('Digite o nome da criptomoeda (ex: Bitcoin ou Ethereum): ')
-  mes_passado=input('Digite a data (ex: 14/06/1019): ')
+  name=input('Enter the name of the cryptocurrency (ex: Bitcoin ou Ethereum): ')
+  mes_passado=input('Enter date (ex: 14/06/1019): ')
   mes_passado_hora=mes_passado+' 8:00'
   data_e_hora = datetime.strptime(mes_passado_hora, '%d/%m/%Y %H:%M')
 
@@ -58,7 +58,7 @@ def get_quote():
 #get_quote()
 
 def get_report():
-  cripto_slug=input('Digite o nome da criptomoeda (ex: bitcoin ou ethereum): ')
+  cripto_slug=input('Enter the name of the cryptocurrency (ex: bitcoin ou ethereum): ')
   url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/info'
   parameters = {
     'slug': cripto_slug,

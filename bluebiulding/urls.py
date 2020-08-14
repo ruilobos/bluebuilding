@@ -19,7 +19,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('bluebiulding.core.urls', namespace='core')),
-    path('relatorios/', include('bluebiulding.reports.urls', namespace='reports'))
+    path('reports/', include('bluebiulding.reports.urls', namespace='reports'))
     #path('', views.home, name='home'),
-    #path('contato/', views.contact, name='contact'),
+    #path('contact/', views.contact, name='contact'),
 ]
