@@ -1,21 +1,11 @@
-from django import forms
-from django.conf import settings
+from django.forms import ModelForm
 from .models import Report
 
-class RequestReport(forms.ModelForm):
+class RequestReport(ModelForm):
     class Meta:
         model = Report
 
-        fields = [
-            'name',
-            'cryptocurrency'
-        ]
-        exclude = [
-            'slug',
-            'image',
-            'created_at',
-            'updated_at'
-        ]
+        fields = '__all__'
     
 
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -21,6 +22,14 @@ class Report(models.Model):
     
     def __str__(self):
         return self.cryptocurrency
+    
+    #Return the url to acess a specific instancy of GetInformation
+    def get_absolute_url(self):
+        return reverse("reports/exhibition.html", args=[str(self.id)])
+    
+    #String to show the object GitInformation (in ADM site)
+    def __str__(self):
+        return str(self.name)
     
     class Meta:
         verbose_name = "Cryptocurrency"

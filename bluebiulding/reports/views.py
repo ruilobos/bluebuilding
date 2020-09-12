@@ -25,31 +25,44 @@ def index(request):
             #form.save()
             return HttpResponseRedirect(reverse('reports:exhibition'))
     '''
-
+    '''
     reports = Report.objects.all()
     template_name = 'reports/index.html'
     context = {}
+    '''
+
     if request.method == 'POST':
         form = RequestReport(request.POST)
         if form.is_valid():
+            data = request.POST
+            request.session['data'] = data
+
+            newReport = form.save()
+
+            context = {
+            'form': form,
+            }
+
+            '''
             context['is_valid'] = True
             #form = RequestReport()
             form.save()
+            '''
             return HttpResponseRedirect(reverse('reports:exhibition'))
-    
-
+            
     else:
         form = RequestReport()
-        context['form'] = form
-        context['report'] = reports
-        return render(request, template_name, context)
+        context = {
+            'form': form,
+        }
+        
+        return render(request, 'reports/index.html', context=context)
+
 
 def exhibition(request):
-    dados_relatorio = Report.objects.all()
-    seu_nome = dados_relatorio['name']
-    #seu_nome = 'Rui'
-    #cryptocurrency = dados_relatorio['bitcoin']
-    cryptocurrency = 'bitcoin'
+    data = request.session.get('data')
+    seu_nome = data['name']
+    cryptocurrency = data['cryptocurrency']
 
     # API to collect cryptocurrency financial information
     url1 = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
