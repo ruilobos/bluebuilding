@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi, {{ user.username }}</h1>
+    <p>Your Reports:</p>
+    {% if object_list %}
+    <ul>
+        {% for name in object_list %}
+        <li>
+            <a href="{% url 'accounts:dashboard_detail' pk=name.id %}">{{ name.cryptocurrency }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>There are no Reports.</p>
+    {% endif %}
+
+{% endblock %}

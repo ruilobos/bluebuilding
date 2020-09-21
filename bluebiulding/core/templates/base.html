@@ -17,15 +17,14 @@
     <div class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
         <a class="pure-menu-heading" href="{% url 'core:home' %}">BlueBuilding</a>
         <ul>
-            <li class="pure-menu-selected"><a href="{% url 'core:home' %}">Home</a></li>
-            <li><a href="{% url 'reports:index' %}">Reports</a></li>
-            <li><a href="#">Exchange Rates</a></li>
-            <li><a href="{% url 'core:contact' %}">Contact</a></li>
+            
+            <li class="pure-menu-selected"><a href="{% url 'reports:index' %}">Reports</a></li>
             {% if user.is_authenticated %}
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="{% url 'accounts:dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
             {% else %}
-            <li><a href="#">Login</a></li>
+            <li><a href="{% url 'accounts:register' %}">Sign Up</a></li>
+            <li><a href="{% url 'accounts:login' %}">Login</a></li>
             {% endif %}
         </ul>
     </div>
@@ -45,7 +44,8 @@
 </div>
 
 <div class="footer">
-        BlueBiulding - Investment Assistant - Developed by Rui Lobo
+        <p>BlueBuilding - Investment Assistant - Developed by Rui Lobo</p>
+        <a href="{% url 'core:contact' %}">Contact Us</a>
 </div>
 
 <script src="http://yui.yahooapis.com/3.12.0/build/yui/yui-min.js"></script>

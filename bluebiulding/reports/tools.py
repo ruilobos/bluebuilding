@@ -27,7 +27,35 @@ def get_symbol():
   except (ConnectionError, Timeout, TooManyRedirects) as e:
     print(e)
 
-#get_symbol()
+
+
+
+def get_id(symbol):
+  cripto_symbol = symbol
+  url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/map'
+  parameters = {
+    'symbol': cripto_symbol
+  }
+  headers = {
+    'Accepts': 'application/json',
+    'X-CMC_PRO_API_KEY': '9484b998-5485-4933-b161-2cac2daad10e',
+  }
+
+  session = Session()
+  session.headers.update(headers)
+
+  try:
+    response = session.get(url, params=parameters)
+    data = json.loads(response.text)
+    id = data['data'][0]['id']
+    return id
+    #id=data[0]
+    #print(id)
+  except (ConnectionError, Timeout, TooManyRedirects) as e:
+    print(e)
+
+
+
 
 def get_quote():
   name=input('Enter the name of the cryptocurrency (ex: Bitcoin ou Ethereum): ')
@@ -55,13 +83,14 @@ def get_quote():
   except (ConnectionError, Timeout, TooManyRedirects) as e:
     print(e)
 
-#get_quote()
+
 
 def get_report():
-  cripto_slug=input('Enter the name of the cryptocurrency (ex: bitcoin ou ethereum): ')
+  symbol=input('Enter the symbol of the cryptocurrency (ex: btc): ')
+  cripto_symbol = symbol.upper()
   url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/info'
   parameters = {
-    'slug': cripto_slug,
+    'symbol': cripto_symbol,
   }
   headers = {
     'Accepts': 'application/json',
@@ -70,21 +99,21 @@ def get_report():
 
   session = Session()
   session.headers.update(headers)
-
+  
   try:
     response = session.get(url, params=parameters)
     data = json.loads(response.text)
-    print(data['data']['1'])
-    id=data['data']['1']['id']
-    name=data['data']['1']['name']
-    symbol=data['data']['1']['symbol']
-    category=data['data']['1']['category']
-    slug=data['data']['1']['slug']
-    logo=data['data']['1']['logo']
-    description=data['data']['1']['description']
-    date_added=data['data']['1']['date_added']
-    notice=data['data']['1']['notice']
-    tags=data['data']['1']['tags']
+    print(data['data'][cripto_symbol])
+    id=data['data'][cripto_symbol]['id']
+    name=data['data'][cripto_symbol]['name']
+    symbol=data['data'][cripto_symbol]['symbol']
+    category=data['data'][cripto_symbol]['category']
+    slug=data['data'][cripto_symbol]['slug']
+    logo=data['data'][cripto_symbol]['logo']
+    description=data['data'][cripto_symbol]['description']
+    date_added=data['data'][cripto_symbol]['date_added']
+    notice=data['data'][cripto_symbol]['notice']
+    tags=data['data'][cripto_symbol]['tags']
     #Exibicao do relatorio
     print("\n" * os.get_terminal_size().lines)
     print('\n Relatorio de Criptomoeda \n')
@@ -102,4 +131,89 @@ def get_report():
   except (ConnectionError, Timeout, TooManyRedirects) as e:
     print(e)
 
-get_report()
+
+def exhibition(symbol):
+    cryptocurrency = symbol
+   
+    # API to collect cryptocurrency financial information
+    urlQuote = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
+
+    # API to collect basic cryptocurrency information.
+    urlInfo = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/info'
+
+    parameters = {
+        'symbol' : cryptocurrency,
+    }
+    headers = {
+        'Accepts': 'application/json',
+        'X-CMC_PRO_API_KEY': '3cb96add-56a5-43d6-8fb3-1c3a2284e462',
+    }
+
+    session = Session()
+    session.headers.update(headers)
+
+
+    #API Cryptocurrency Quotes Latest
+    try:
+        response1 = session.get(urlQuote, params=parameters)
+        data1 = json.loads(response1.text)
+        
+        price = str(data1['data'][cryptocurrency]['quote']['USD']['price'])
+        volume_24h = str(data1['data'][cryptocurrency]['quote']['USD']['volume_24h'])
+        percent_change_1h = str(data1['data'][cryptocurrency]['quote']['USD']['percent_change_1h'])
+        percent_change_24h = str(data1['data'][cryptocurrency]['quote']['USD']['percent_change_24h'])
+        percent_change_7d = str(data1['data'][cryptocurrency]['quote']['USD']['percent_change_7d'])
+        market_cap = str(data1['data'][cryptocurrency]['quote']['USD']['market_cap'])
+
+        print(price)
+        print(volume_24h)
+        print(percent_change_1h)
+        print(percent_change_24h)
+        print(percent_change_7d)
+        print(market_cap)
+
+    except (ConnectionError, Timeout, TooManyRedirects) as e:
+        print(e)
+            
+    #API Cryptocurrency Info
+    try:
+        response = session.get(urlInfo, params=parameters)
+        data = json.loads(response.text)
+
+        website = data['data'][cryptocurrency]['urls']['website'][0]
+        technical_doc = data['data'][cryptocurrency]['urls']['technical_doc'][0]
+        id=data['data'][cryptocurrency]['id']
+        name=data['data'][cryptocurrency]['name']
+        symbol=data['data'][cryptocurrency]['symbol']
+        category=data['data'][cryptocurrency]['category']
+        slug=data['data'][cryptocurrency]['slug']
+        logo=data['data'][cryptocurrency]['logo']
+        description=data['data'][cryptocurrency]['description']
+        date_added=data['data'][cryptocurrency]['date_added']
+        notice=data['data'][cryptocurrency]['notice']
+        tags=data['data'][cryptocurrency]['tags']
+        explorer = data['data'][cryptocurrency]['urls']['explorer']
+
+        print(website)
+        print(technical_doc)
+        print(id)
+        print(name)
+        print(symbol)
+        print(category)
+        print(slug)
+        print(logo)
+        print(description)
+        print(date_added)
+        print(notice)
+        print(tags)
+        print(explorer)
+        
+    except (ConnectionError, Timeout, TooManyRedirects) as e:
+        print(e)
+
+
+#get_symbol()
+#get_id("btc")
+#get_quote()
+#get_report()
+exhibition('XRP')

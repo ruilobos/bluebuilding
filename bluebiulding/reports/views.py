@@ -1,19 +1,105 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from .models import Report
-from .forms import RequestReport
+from .forms import RequestReport, VisitorReport
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
-import os
-from requests import Request, Session
-from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
-import json
+from django.contrib.auth.models import User
 from datetime import datetime
 
-# Create your views here.
+from bluebiulding.reports.api import cryptoAPI
+
 
 def index(request):
-    '''
+    # If the user is login
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = RequestReport(request.POST)
+            if form.is_valid():
+                fs = form.save(commit=False)
+                if Report.objects.filter(cryptocurrency=fs.cryptocurrency, name=request.user):
+                    return HttpResponseRedirect(reverse('accounts:dashboard')) 
+
+                else:
+                    fs.name = request.user
+                    fs.save()
+                    context = {
+                    'form': form,
+                    }
+
+                    return HttpResponseRedirect(reverse('reports:exhibition'))
+                    
+        else:
+            form = RequestReport()
+            context = {
+                'form': form,
+            }
+            
+            return render(request, 'reports/index.html', context=context)
+    else:
+        # If the the user is a visitor
+        if request.method == 'POST':
+            form = VisitorReport(request.POST)
+            if form.is_valid():
+                data = request.POST
+                request.session['data'] = data
+                context = {
+                'form': form,
+                }
+
+                return HttpResponseRedirect(reverse('reports:exhibition'))   
+        else:
+            form = VisitorReport()
+            context = {
+                'form': form,
+            }
+            
+            return render(request, 'reports/index.html', context=context)
+
+
+def exhibition(request):
+    if request.user.is_authenticated:
+        data = Report.objects.latest('id')
+        your_name = str(data.name)
+        cryptocurrency = str(data.cryptocurrency)
+
+        context = cryptoAPI(your_name, cryptocurrency)
+
+        return render(request, 'reports/exhibition.html', context)
+    else:
+        data = request.session.get('data')
+        your_name = data['name']
+        cryptocurrency = data['cryptocurrency']
+        
+        context = cryptoAPI(your_name, cryptocurrency)
+
+        return render(request, 'reports/exhibition.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+from django.shortcuts import get_object_or_404
+import os
+
+def index(request):
     reports = Report.objects.all()
     template_name = 'reports/index.html'
     context = {}
@@ -23,78 +109,44 @@ def index(request):
             context['is_valid'] = True
             form = RequestReport()
             #form.save()
-            return HttpResponseRedirect(reverse('reports:exhibition'))
-    '''
-    '''
+            return HttpResponseRedirect(reverse('reports:exhibitionDB'))
+    
     reports = Report.objects.all()
     template_name = 'reports/index.html'
     context = {}
-    '''
 
-    if request.method == 'POST':
-        form = RequestReport(request.POST)
-        if form.is_valid():
-            data = request.POST
-            request.session['data'] = data
-
-            newReport = form.save()
-
-            context = {
-            'form': form,
-            }
-
-            '''
-            context['is_valid'] = True
-            #form = RequestReport()
-            form.save()
-            '''
-            return HttpResponseRedirect(reverse('reports:exhibition'))
-            
-    else:
-        form = RequestReport()
-        context = {
-            'form': form,
-        }
-        
-        return render(request, 'reports/index.html', context=context)
+    return render(request, 'reports/index.html', context=context)
 
 
+from requests import Request, Session
+from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
+import json
 def exhibition(request):
-    data = request.session.get('data')
-    seu_nome = data['name']
-    cryptocurrency = data['cryptocurrency']
+    if request.user.is_authenticated():
+    seu_nome = request.user.username
+
+
+    if request.user.is_authenticated:
+        data = Report.objects.latest('id')
+        seu_nome = str(data.name)
+        cryptocurrency = str(data.cryptocurrency)
+    else:
+        data = request.session.get('data')
+        seu_nome = data['name']
+        cryptocurrency = data['cryptocurrency']
+    
+    print(data)
+    print(seu_nome)
+    print(cryptocurrency)
 
     # API to collect cryptocurrency financial information
-    url1 = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
-    parameters1 = {
-        'slug' : cryptocurrency,
-    }
-    headers1 = {
-        'Accepts': 'application/json',
-        'X-CMC_PRO_API_KEY': '3cb96add-56a5-43d6-8fb3-1c3a2284e462',
-    }
-
-    session1 = Session()
-    session1.headers.update(headers1)
-
-    try:
-        response1 = session1.get(url1, params=parameters1)
-        data1 = json.loads(response1.text)
-        price = str(data1['data']['1']['quote']['USD']['price'])
-        volume_24h = str(data1['data']['1']['quote']['USD']['volume_24h'])
-        percent_change_1h = str(data1['data']['1']['quote']['USD']['percent_change_1h'])
-        percent_change_24h = str(data1['data']['1']['quote']['USD']['percent_change_24h'])
-        percent_change_7d = str(data1['data']['1']['quote']['USD']['percent_change_7d'])
-        market_cap = str(data1['data']['1']['quote']['USD']['market_cap'])
-    except (ConnectionError, Timeout, TooManyRedirects) as e:
-        print(e)
-            
+    urlQuote = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 
     # API to collect basic cryptocurrency information.
-    cripto_slug = cryptocurrency
-    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/info'
+    urlInfo = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/info'
+
     parameters = {
-        'slug': cripto_slug,
+        'symbol' : cryptocurrency,
     }
     headers = {
         'Accepts': 'application/json',
@@ -104,22 +156,42 @@ def exhibition(request):
     session = Session()
     session.headers.update(headers)
 
+
+    #API Cryptocurrency Quotes Latest
     try:
-        response = session.get(url, params=parameters)
+        response1 = session.get(urlQuote, params=parameters)
+        data1 = json.loads(response1.text)
+        
+        price = str(data1['data'][cryptocurrency]['quote']['USD']['price'])
+        volume_24h = str(data1['data'][cryptocurrency]['quote']['USD']['volume_24h'])
+        percent_change_1h = str(data1['data'][cryptocurrency]['quote']['USD']['percent_change_1h'])
+        percent_change_24h = str(data1['data'][cryptocurrency]['quote']['USD']['percent_change_24h'])
+        percent_change_7d = str(data1['data'][cryptocurrency]['quote']['USD']['percent_change_7d'])
+        market_cap = str(data1['data'][cryptocurrency]['quote']['USD']['market_cap'])
+
+    except (ConnectionError, Timeout, TooManyRedirects) as e:
+        print(e)
+            
+
+    #API Cryptocurrency Info
+    try:
+        response = session.get(urlInfo, params=parameters)
         data = json.loads(response.text)
-        website = data['data']['1']['urls']['website'][0]
-        technical_doc = data['data']['1']['urls']['technical_doc'][0]
-        id=data['data']['1']['id']
-        name=data['data']['1']['name']
-        symbol=data['data']['1']['symbol']
-        category=data['data']['1']['category']
-        slug=data['data']['1']['slug']
-        logo=data['data']['1']['logo']
-        description=data['data']['1']['description']
-        date_added=data['data']['1']['date_added']
-        notice=data['data']['1']['notice']
-        tags=data['data']['1']['tags']
-        explorer = data['data']['1']['urls']['explorer']
+
+        website = data['data'][cryptocurrency]['urls']['website'][0]
+        technical_doc = data['data'][cryptocurrency]['urls']['technical_doc'][0]
+        id=data['data'][cryptocurrency]['id']
+        name=data['data'][cryptocurrency]['name']
+        symbol=data['data'][cryptocurrency]['symbol']
+        category=data['data'][cryptocurrency]['category']
+        slug=data['data'][cryptocurrency]['slug']
+        logo=data['data'][cryptocurrency]['logo']
+        description=data['data'][cryptocurrency]['description']
+        date_added=data['data'][cryptocurrency]['date_added']
+        notice=data['data'][cryptocurrency]['notice']
+        tags=data['data'][cryptocurrency]['tags']
+        explorer = data['data'][cryptocurrency]['urls']['explorer']
+        
         
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         print(e)
@@ -148,3 +220,4 @@ def exhibition(request):
 
     }
     return render(request, 'reports/exhibition.html', context)
+'''
