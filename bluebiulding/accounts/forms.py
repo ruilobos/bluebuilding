@@ -9,14 +9,14 @@ User = get_user_model()
 
 class PasswordResetForm(forms.Form):
     
-    email = forms.EmailField(label='E-mail')
+    email = forms.EmailField(label='Email')
     
     def clean_email(self):
         email = self.cleaned_data['email']
         if User.objects.filter(email=email).exists():
             return email
         raise forms.ValidationError(
-            'Nenhum usuário encontrado com este e-mail'
+            'No users found with this email'
         )
         
     def save(self):
@@ -25,7 +25,7 @@ class PasswordResetForm(forms.Form):
         reset = PasswordReset(key=key, user=user)
         reset.save()
         template_name = 'accounts/password_reset_mail.html'
-        subject = 'Criar nova senha no Simple MOOC'
+        subject = 'Create new password in BlueBuilding'
         context = {
             'reset': reset,
         }
@@ -33,16 +33,16 @@ class PasswordResetForm(forms.Form):
 
 class RegisterForm(forms.ModelForm):
     
-    password1 = forms.CharField(label='Senha', widget=forms.PasswordInput)
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(
-        label='Confirmação de Senha', widget=forms.PasswordInput
+        label='Confirm Password', widget=forms.PasswordInput
     )
     
     def clean_password2(self):
         password1=self.cleaned_data.get("password1")
         password2=self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
-            raise forms.ValidationError('A confirmação não está correta')
+            raise forms.ValidationError('Confirmation is not correct')
         return password2
     
     def save(self, commit=True):

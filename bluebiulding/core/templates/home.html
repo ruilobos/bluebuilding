@@ -1,40 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="splash">
-    <div class="pure-g-r">
-        <div class="pure-u-1">
-            <div class="l-box splash-text">
-                <h1 class="splash-head">
-                    The Ultimate Assistant for Your Investments
-                </h1>
-                <h2 class="splash-subhead">
-                    BlueBuilding aims to simplify the way of tracking your investments, providing objective and easy-to-use tools.
-                </h2>
-                <p>
-                    <a href="{% url 'reports:index' %}" class="pure-button primary-button">Get Start!</a>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="pure-g-r content-ribbon">
-    <div class="pure-u-2-3">
-        <div class="l-box">
-            <h4 class="content-subhead">Reports</h4>
-            <h3>Generate your reports</h3>
-            <p>
-               Create personalized reports and get complete information about Cryptocurrencies.
-            </p>
-        </div>
+<section id="header" class="jumbotron text-center">
+    <h1 class="display-4">The Ultimate Investment Assistant</h1>
+    <hr>
+    <p class="lead">BlueBuilding simplify the way of getting information about cryptocurrencies</p>
+    <a href="{% url 'reports:index' %}" class="btn btn-secondary">Get Start!</a>
+</section>
+
+<section id="gallery">
+    <div class="container">
+         <div class="row">
+             <div class="col-lg-4 mb-4">
+                 <div class="card">
+                     <img class="card-img-top" src="../static/imgs/markus-spiske-3Tf1J8q9bBA-unsplash.jpg" alt="">
+                     <div class="card-body">
+                         <h5 class="card-title">Reports</h5>
+                         <p class="card-text">Create personalized reports and get complete information about Cryptocurrencies.</p>
+                         <a href="{% url 'reports:index' %}" class="btn btn-outline-success btn-sm">Report</a>
+                         <a href="" class="btn btn-outline-danger btn-sm"><i class="far fa-heart"></i></a>
+                     </div>
+                 </div>
+             </div>
+             <div class="col-lg-4 mb-4">
+                 <div class="card">
+                     <img class="card-img-top" src="../static/imgs/carlos-muza-hpjSkU2UYSU-unsplash.jpg" alt="">
+                     <div class="card-body">
+                         <h5 class="card-title">Dashboard</h5>
+                         <p class="card-text">Create personalized reports and get complete information about Cryptocurrencies.</p>
+                         <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-success btn-sm">Get Start</a>
+                         <a href="" class="btn btn-outline-danger btn-sm"><i class="far fa-heart"></i></a>
+                     </div>
+                 </div>
+             </div>
+             <div class="col-lg-4 mb-4">
+                 <div class="card">
+                     <img class="card-img-top" src="../static/imgs/campaign-creators-pypeCEaJeZY-unsplash.jpg" alt="">
+                     <div class="card-body">
+                         <h5 class="card-title">Sign UP</h5>
+                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda corrupti quam magnam!
+                             Veniam, dolorum facere?
+                             Commodi, ut. Et, itaque quam!</p>
+                         <a href="{% url 'accounts:register' %}" class="btn btn-outline-success btn-sm">Get Start</a>
+                         <a href="" class="btn btn-outline-danger btn-sm"><i class="far fa-heart"></i></a>
+                     </div>
+                 </div>
+             </div>
+         </div>
     </div>
-    <div class="pure-u-1-3">
-        <div class="l-box">
-            <img src="http://placehold.it/400x250"
-                 alt="Relatorios">
-        </div>
-    </div>
-</div>
+ </section>
 
 {% endblock %}

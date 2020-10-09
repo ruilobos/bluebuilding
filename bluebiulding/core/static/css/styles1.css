@@ -1,0 +1,110 @@
+#header {
+    background: url("../imgs/kendal-rIOsyNXVfGg-unsplash.jpg") center center / cover no-repeat;
+    height: 600px;
+    color: white;
+    text-align: center;
+	padding-top: 20%;
+	text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
+				 0px 8px 13px rgba(0,0,0,0.1),
+				 0px 18px 23px rgba(0,0,0,0.1);
+}
+
+#contact {
+    margin-top: 100px;
+}
+
+#index {
+    margin-top: 100px;
+}
+
+#exhibition {
+    margin-top: 70px;
+}
+
+#report {
+    background: white;
+}
+
+#index .jumbotron {
+    background: white;
+    color: black;
+}
+
+body {
+    background: #f7f7f7;
+    font-family: "Nunito", sans-serif;
+}
+
+.blurb h2 {
+   color: #EA1C2C;
+   font-weight: 100;
+   font-size: 2.5rem;
+}
+
+.blurb p {
+    color: #f498b8;
+    font-weight: 100;
+    font-size: 1.125rem;
+    line-height: 2;
+}
+
+.content {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#registerIcon {
+    color: #777777;
+}
+
+#mainNavbar {
+    background: #555555;
+    font-size: 1.5rem;
+    font-weight: 100;    
+}
+
+#mainNavbar .nav-link {
+    color: white;
+}
+
+#mainNavbar .nav-link:hover {
+    color: #EA1C2C;
+}
+
+#mainNavbar .navbar-brand {
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+#headingGroup span {
+    color: #EA1C2C;
+}
+
+#headingGroup h1 {
+    font-weight: 100;
+    font-size: 4rem;
+}
+
+.navbar.scrolled {
+    background: #555555;
+    transition: background 500ms;
+}
+
+hr {
+    width: 700px;
+	max-width: 90%;
+	border-top: 1px solid #f8f8f8;
+	border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+
+@media (max-width: 1200px) {
+    #headingGroup h1 {
+        font-weight: 100;
+        font-size: 3rem;
+    }
+    .blurb h2 {
+        font-size: 2rem;
+    }
+}
