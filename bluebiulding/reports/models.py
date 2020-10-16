@@ -43,7 +43,7 @@ class Cryptocurrency(models.Model):
                             )
 
     def __str__(self):
-        return self.symbol
+        return self.slug
 
     class Meta:
         verbose_name = "Cryptocurrecy"

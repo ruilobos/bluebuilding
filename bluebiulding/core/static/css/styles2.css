@@ -30,6 +30,14 @@
     color: black;
 }
 
+.card-img-top {
+    height: 200px;
+}
+
+.table {
+    margin-top: 2rem;
+}
+
 body {
     background: #f7f7f7;
     font-family: "Nunito", sans-serif;

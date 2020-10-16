@@ -2,17 +2,17 @@
 
 {% block content %}
 <div id="exhibition" class="container-fluid">
-  <h4>Hi {{ your_name }}, check your Cryptocurrency Report :</h4>
+  <h4>Hi {{ your_name }}, check your Report :</h4>
   <div class="row justify-content-around align-items-center">
     <div id="report" class="col-sm-8">
       <section class="container-fluid px-0">
           <div class="row justify-content-around align-items-center">
-              <div class="col-sm-3">
-                  <table class="table table-borderless">
+              <div class="col-sm-6">
+                  <table class="table table-borderless mt-50">
                       <thead>
                       <tr>
                           <td class="align-middle"><img src="{{ logo }}" alt=""></td>
-                          <td class="align-middle">{{ name }}</td>
+                          <td class="align-middle"><h3>{{ name }}</h3></td>
                       </tr>
                       </thead>
                   </table>
@@ -46,36 +46,36 @@
         <thead>
           <tr>
             <td>Price</td>
-            <td>{{ price }}</td>
+            {% load converters %}
+            <td>{{ price | currency }}</td>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Volume (24h):</a></td>
-            <td>{{ volume_24h }}</td>
+            <td>{{ volume_24h | currency }}</td>
           </tr>
           <tr>
             <td>Percent change (1h):</a></td>
-            <td>{{ percent_change_1h }}</td>
+            <td>{{ percent_change_1h | percentage }}</td>
           </tr>
           <tr>
             <td>Percent change (24h):</a></td>
-            <td>{{ percent_change_24h }}</td>
+            <td>{{ percent_change_24h | percentage }}</td>
           </tr>
           <tr>
             <td>Percent change (7d):</a></td>
-            <td>{{ percent_change_7d }}</td>
+            <td>{{ percent_change_7d | percentage }}</td>
           </tr>
           <tr>
             <td>Market Cap:</a></td>
-            <td>{{ market_cap }}</td>
+            <td>{{ market_cap | currency }}</td>
           </tr>
         </tbody>
       </table>
       <hr>
       <p>Description: {{ description }}</p>
-      <p>Date Added: {{ date_added }}</p>
-      <p>News: {{ notice }}</p><br>
+      <hr>
       <p>Tags:</p>
       <ul>
           {% for tag in tags %}

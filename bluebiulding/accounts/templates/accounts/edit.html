@@ -1,26 +1,24 @@
-{% extends "accounts/dashboard.html" %}
+{% extends "base.html" %}
 
-{% block breadcrumb %}
-    {{ block.super }}
-    <li>/</li>
-    <li><a href="{% url 'accounts:edit' %}">Editar Conta</a></li>
-{% endblock %}
-
-{% block dashboard_content %}
-<form class="pure-form pure-form-stacked" method="post">
-    {% csrf_token%}
-    <fieldset>
-        {{ form.non_field_errors }}
-        {% for field in form %}
-        <div class="pure-controls">
-            {{ field.label_tag }}
-            {{ field }}
-            {{ field.errors }}
-        </div>
-        {% endfor %}
-        <div class="pure-controls">
-            <button type="submit" class="pure-button pure-button-primary">Salvar Modificacoes</button>
-        </div>
-    </fieldset>
-</form>
-{% endblock %}
+{% block content %}
+<div id="exhibition" class="container">
+    <p>Edit your Account:</p>
+    <form class="pure-form pure-form-stacked" method="post">
+        {% csrf_token%}
+        <fieldset>
+            {{ form.non_field_errors }}
+            {% for field in form %}
+            <div class="pure-controls">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+            {% endfor %}
+            <div class="pure-controls">
+                <button type="submit" class="pure-button pure-button-primary">Save</button>
+            </div>
+        </fieldset>
+    </form>
+    <button type="button" class="btn btn-outline-primary btn-sm"><a href="{% url 'accounts:edit_password' %}">Edit Password</a></button>
+</div>
+{% endblock %}  

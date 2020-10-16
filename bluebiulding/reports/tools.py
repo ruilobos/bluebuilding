@@ -29,7 +29,6 @@ def get_symbol():
 
 
 
-
 def get_id(symbol):
   cripto_symbol = symbol
   url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/map'

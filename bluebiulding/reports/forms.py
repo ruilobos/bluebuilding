@@ -13,7 +13,7 @@ class RequestReport(ModelForm):
     
 
 class VisitorReport(forms.Form):
-    name = forms.CharField(label='Name:', max_length=100)
+    name = forms.CharField(label='Your Name:', max_length=100)
     #cryptocurrency = forms.CharField(label='Cryptocurrency:', max_length=100)
     cryptocurrency = forms.ModelChoiceField(queryset=Cryptocurrency.objects.all(), to_field_name="symbol") 
 '''

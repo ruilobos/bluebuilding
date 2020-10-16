@@ -60,7 +60,7 @@ def exhibition(request):
     if request.user.is_authenticated:
         data = Report.objects.latest('id')
         your_name = str(data.name)
-        cryptocurrency = str(data.cryptocurrency)
+        cryptocurrency = str(data.cryptocurrency.symbol)
 
         context = cryptoAPI(your_name, cryptocurrency)
 
