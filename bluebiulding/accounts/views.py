@@ -32,7 +32,7 @@ def dashboardDetails(request, pk):
     user_report = Report.objects.filter(name=request.user, id=pk)
 
     your_name = str(user_report[0].name)
-    cryptocurrency = str(user_report[0].cryptocurrency)
+    cryptocurrency = str(user_report[0].cryptocurrency.symbol)
 
     print(your_name)
 
