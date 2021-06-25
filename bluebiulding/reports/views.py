@@ -5,7 +5,6 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.models import User
 from datetime import datetime
-
 from bluebiulding.reports.api import cryptoAPI
 
 

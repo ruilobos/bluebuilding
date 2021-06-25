@@ -1,15 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import (UserCreationForm, PasswordChangeForm, SetPasswordForm)
 from django.contrib.auth import authenticate, login, get_user_model
-from django.conf import settings
 from .forms import RegisterForm, EditAccountForm, PasswordResetForm
 from django.contrib.auth.decorators import login_required
 from .models import PasswordReset
-from bluebiulding.core.utils import generate_hash_key
-#from bluebiulding.courses.models import Enrollment
 from django.contrib import messages
-from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
 from bluebiulding.reports.models import Report
 from bluebiulding.reports.api import cryptoAPI
 
